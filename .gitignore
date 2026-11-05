@@ -1,0 +1,32 @@
+# Enunciado original del desafío (documento de uso interno): no se publica
+docs/analisis/Disruption Companion.pdf
+*.pdf
+
+# Herramientas de trabajo con IA que no forman parte de la entrega
+_bmad/
+_bmad-output/
+.claude/
+.github/modernize/
+
+# Build y dependencias
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Sistema y temporales
+.DS_Store
+*.log
+*.tmp
+*.swp
+
+# Secretos locales
+.env
+.env.*
+*.pem
+*.key
+id_*

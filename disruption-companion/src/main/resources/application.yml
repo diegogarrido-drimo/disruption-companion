@@ -1,0 +1,13 @@
+# Render and similar platforms inject the port through PORT.
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: disruption-companion
+  jackson:
+    default-property-inclusion: non_null
+
+# Airport to country, used only to derive "international" for R2 (assumption S-8).
+disruption:
+  airport-countries: "{SCL: 'CL', LIM: 'PE', MEX: 'MX'}"

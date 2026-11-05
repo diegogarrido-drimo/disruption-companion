@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disruption Companion — Presentación técnica</title>
+<style>
+  :root{--ink:#1d2433;--mut:#5b6577;--line:#d9dee7;--bg:#f6f7fa;--card:#fff;--acc:#1f4e8c;--ok:#1d7a4a;--warn:#a86a00;--bad:#b3342b;--unk:#6a4fa3}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.5 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:8px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  header b{color:var(--acc)}
+  nav{display:flex;gap:6px;flex-wrap:wrap;font-size:13px}
+  nav a{color:var(--mut);text-decoration:none;padding:2px 8px;border:1px solid var(--line);border-radius:12px}
+  nav a:hover{color:var(--acc);border-color:var(--acc)}
+  main{max-width:1000px;margin:0 auto;padding:12px 20px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 26px;margin:18px 0}
+  h1{font-size:28px;margin:0 0 4px} h2{font-size:22px;margin:0 0 4px;color:var(--acc)}
+  .n{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .t{float:right;font-size:12px;color:var(--mut)}
+  h3{font-size:15px;margin:14px 0 4px}
+  p{margin:6px 0} ul{margin:6px 0;padding-left:20px} li{margin:3px 0}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:#eef1f6}
+  code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:13px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:10px;color:#fff;white-space:nowrap}
+  .T{background:var(--ok)} .F{background:#7a8397} .U{background:var(--unk)} .P{background:var(--warn)} .R{background:var(--bad)}
+  .note{border-left:4px solid var(--acc);background:#eef3fa;padding:8px 12px;margin:10px 0;font-size:14px}
+  .warn{border-left-color:var(--warn);background:#fbf4e6}
+  .flow{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;margin:10px 0}
+  .box{border:1px solid var(--acc);border-radius:8px;padding:8px 10px;font-size:13px;background:#f3f7fd;flex:1;min-width:130px}
+  .box b{display:block;color:var(--acc)} .arrow{align-self:center;color:var(--mut)}
+  .core{background:#e9f6ef;border-color:var(--ok)} .core b{color:var(--ok)}
+  /* línea de tiempo del pasajero */
+  .tl{position:relative;height:110px;margin:46px 0 8px;border-top:2px solid var(--line)}
+  .mk{position:absolute;top:-7px;width:14px;height:14px;border-radius:50%}
+  .mk.prog{background:#7a8397;border-radius:2px}
+  .mk.rep{background:var(--ok)}
+  .mk.proy{background:#fff;border:2px dashed var(--bad)}
+  .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin:2px 0 4px}
+  .lg i{display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-right:5px}
+  .lg .prog{background:#7a8397;border-radius:2px}.lg .rep{background:var(--ok);border-radius:50%}.lg .proy{border:2px dashed var(--bad);border-radius:50%}
+  .lb b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+  .lb .p{color:#5b6577}.lb .r{color:var(--ok)}.lb .y{color:var(--bad)}
+  .lb{position:absolute;top:12px;font-size:12px;line-height:1.3;transform:translateX(-50%);text-align:center;width:120px}
+  .bar{position:absolute;top:-28px;height:16px;border-radius:8px;font-size:11px;line-height:16px;color:#1d2433;text-align:center;overflow:hidden;white-space:nowrap}
+  .meta{font-size:12px;color:var(--mut)}
+  footer{text-align:center;color:var(--mut);font-size:13px;padding:10px 20px 40px}
+  @media print{header{display:none}section{break-inside:avoid;border:none}}
+</style>
+</head>
+<body>
+<header>
+  <b>Disruption Companion</b>
+  <nav>
+    <a href="#s1">1 Problema</a><a href="#s2">2 Análisis</a><a href="#s3">3 Arquitectura</a><a href="#s4">4 Caso base</a>
+    <a href="#s5">5 Implementado</a><a href="#s6">6 Uso de IA</a><a href="#s7">7 Límites</a>
+  </nav>
+</header>
+<main>
+
+<section style="margin-top:12px">
+  <h1>Disruption Companion</h1>
+  <p><b>Diego Garrido Delgado</b> · Desafío técnico Software Engineer Senior</p>
+  <p>Caso A · Track Backend/Integración · Java 21, Spring Boot 4.1.1, Gradle</p>
+  <p class="meta">Guion de 10 minutos. Los tiempos de cada sección son orientativos. Documentos de apoyo: <code>docs/documentacion/README.md</code> y <code>bitacora-ia.md</code>.</p>
+</section>
+
+<section id="s1">
+  <span class="t">~1 min</span><div class="n">1</div><h2>Problema de negocio y objetivo</h2>
+  <p>Un pasajero con un vuelo modificado necesita saber <b>qué pasó</b> y <b>qué sigue</b>, sin información no verificada y sin que se ejecuten acciones de alto impacto sin control.</p>
+  <ul>
+    <li><b>Objetivo del negocio:</b> reducir la incertidumbre del pasajero y los contactos evitables al call center, manteniendo exactitud, seguridad y trazabilidad.</li>
+    <li><b>Dificultad real:</b> datos desactualizados o contradictorios entre fuentes, datos parciales y opciones que vencen en minutos.</li>
+    <li><b>Costo de equivocarse:</b> una recomendación incorrecta genera costo, reclamo o incumplimiento de política.</li>
+  </ul>
+  <div class="note"><b>Por qué Backend:</b> el valor está en decidir con exactitud y poder justificarlo. Eso se demuestra y se prueba mejor en lógica que en pantalla.</div>
+</section>
+
+<section id="s2">
+  <span class="t">~1,5 min</span><div class="n">2</div><h2>Cómo abordé el análisis y las decisiones principales</h2>
+  <p><b>Proceso:</b> análisis propio del PDF → refinamiento con ChatGPT (v0.1) → revisión crítica contra el PDF (agente Analyst) → diseño (agente Architect) → implementación (agente Dev). El PDF prevalece sobre cualquier documento derivado.</p>
+  <h3>Qué cambió al revisar críticamente el v0.1</h3>
+  <ul>
+    <li>Distinguir una conexión <b>en riesgo</b> (proyectada) de una <b>perdida</b> (confirmada): el PDF no trae ningún dato de «perdida».</li>
+    <li>Corregí un error de la IA: las opciones <b>sí</b> traen <code>confidence</code>.</li>
+    <li>El reembolso no se descarta solo por <code>refundable:false</code>: queda «no verificable» hasta consultar su política.</li>
+    <li>Un instante de referencia explícito para evaluar vigencia, en vez del reloj.</li>
+  </ul>
+  <h3>Decisiones principales</h3>
+  <table>
+    <tr><th>Decisión</th><th>Alternativa descartada</th></tr>
+    <tr><td>Reglas R1–R5 como código explícito, con lógica de tres valores (verdadero / falso / <b>desconocido</b>)</td><td>Parser de condiciones o motor de reglas; un <code>false</code> por defecto ocultaría datos faltantes</td></tr>
+    <tr><td>Salida simple: <code>recommendationSupported</code> + <code>humanInterventionRequired</code> + motivos</td><td>Enum de estados</td></tr>
+    <tr><td>Sin IA en runtime</td><td>Un modelo añadiría costo, latencia y riesgo de inventar derechos</td></tr>
+    <tr><td>Sin escrituras, persistencia ni frontend; las escrituras solo se diseñan</td><td>Ejecutar rebooking o compensación</td></tr>
+    <tr><td>Alcance acotado a AC-1…AC-6</td><td>Implementar los 10 criterios</td></tr>
+  </table>
+</section>
+
+<section id="s3">
+  <span class="t">~1,5 min</span><div class="n">3</div><h2>Arquitectura y flujo del backend</h2>
+  <p><b>Núcleo funcional puro + capa fina de adaptadores.</b> El dominio no usa Spring, ni IO, ni reloj: recibe los datos y el instante «ahora» como parámetros. Mismo input y mismo instante, mismo resultado.</p>
+  <div class="flow">
+    <div class="box"><b>api</b>GET evaluación<br><code>?at=…</code></div><span class="arrow">→</span>
+    <div class="box"><b>application</b>servicio + 4 puertos de lectura</div><span class="arrow">→</span>
+    <div class="box core"><b>domain (puro)</b>fuentes · conexión · R1–R5 · opciones</div><span class="arrow">→</span>
+    <div class="box"><b>Evaluation</b>2 booleanos + motivos + evidencia</div>
+  </div>
+  <div class="flow">
+    <div class="box"><b>adapter.fixture</b>JSON del PDF tras los 4 puertos: <code>get_trip_context</code>, <code>get_operational_events</code>, <code>get_policy_rules</code>, <code>get_eligible_options</code></div>
+  </div>
+  <h3>Cuándo hay «recomendación respaldada»</h3>
+  <p>Solo si se cumplen las cuatro: política verificada · estado del vuelo resuelto · existe un derecho <b>confirmado</b> · ninguna regla desconocida sin cubrir por otra. Se requiere persona si no hay recomendación o si hay un derecho pendiente de aprobación.</p>
+  <div class="note"><b>Tres niveles que no se mezclan:</b> condición cumplida → derecho confirmado o pendiente de aprobación → acción ejecutada. Nunca se ejecuta nada: <code>actionsExecuted</code> es siempre <code>[]</code>.</div>
+  <p class="meta">Detalle: <code>docs/diseno/01-arquitectura-propuesta.md</code> (AD-1 a AD-11).</p>
+</section>
+
+<section id="s4">
+  <span class="t">~2 min</span><div class="n">4</div><h2>El caso base y las reglas</h2>
+  <p>Reserva <code>ABC123</code>: María (adulta) y Tomás (niño, 7). Instante de evaluación fijo: <code>2026-09-15T11:03:00Z</code>.</p>
+
+  <h3>El viaje del pasajero (horas locales del PDF)</h3>
+  <div class="tl" aria-label="Línea de tiempo de la conexión">
+    <!-- escala: 14:00 = 0%, 24:00 = 100% (10 h) -->
+    <div class="bar" style="left:5%;width:34%;background:#9db7d9" title="S1 programado 14:30–17:55">S1 SCL→LIM prog. 14:30–17:55</div>
+    <div class="bar" style="left:50.8%;width:45.8%;background:#9db7d9" title="S2 programado 19:05–23:40">S2 LIM→MEX prog. 19:05–23:40</div>
+    <div class="mk prog" style="left:calc(5% - 7px)"></div><div class="lb" style="left:5%"><b class="p">Programado</b>14:30 S1 sale</div>
+    <div class="mk rep" style="left:calc(31.7% - 7px)"></div><div class="lb" style="left:31.7%;top:44px"><b class="r">Reportado</b>17:10 S1 sale (+160 min, <code>E-1001</code>)</div>
+    <div class="mk prog" style="left:calc(50.8% - 7px)"></div><div class="lb" style="left:50.8%"><b class="p">Programado</b>19:05 S2 sale</div>
+    <div class="mk proy" style="left:calc(65.8% - 7px)"></div><div class="lb" style="left:65.8%;top:44px"><b class="y">Proyectado</b>20:35 S1 llegaría</div>
+  </div>
+  <div class="lg"><span><i class="prog"></i>Programado (itinerario)</span><span><i class="rep"></i>Reportado (evento operacional)</span><span><i class="proy"></i>Proyectado (calculado, no confirmado)</span></div>
+  <p class="meta">Llegada programada 17:55 + 160 min = 20:35 (proyectada). Salida de S2 19:05. Déficit de <b>90 min</b>: conexión <b>en riesgo</b>, no confirmada como perdida (sin tiempo mínimo de conexión, que el PDF no define).</p>
+
+  <h3>Reglas de la política <code>POL-DELAY-2026-03</code></h3>
+  <table>
+    <tr><th>Regla</th><th>Condición</th><th>Resultado</th><th>Por qué</th></tr>
+    <tr><td>R1</td><td>retraso ≥ 180</td><td><span class="tag F">FALSO</span></td><td>160 &lt; 180 (margen de 20 min)</td></tr>
+    <tr><td>R2</td><td>retraso ≥ 240 e internacional</td><td><span class="tag F">FALSO</span></td><td>160 &lt; 240</td></tr>
+    <tr><td>R3</td><td>conexión perdida</td><td><span class="tag U">DESCONOCIDO</span></td><td>riesgo proyectado, sin dato de «perdida»</td></tr>
+    <tr><td>R4</td><td>compensación solicitada</td><td><span class="tag F">FALSO</span></td><td>nadie la solicitó (entrada, falsa por defecto)</td></tr>
+    <tr><td>R5</td><td>grupo con menor</td><td><span class="tag T">VERDADERO</span> <span class="tag P">PENDIENTE DE APROBACIÓN</span></td><td>Tomás es <code>CHILD</code>; la política exige aprobación humana</td></tr>
+  </table>
+
+  <div class="cols">
+    <div>
+      <h3>Fuentes de eventos</h3>
+      <ul>
+        <li><code>E-1001</code> DELAY 160 min (OPS_CORE, 10:48Z): <b>vigente</b>.</li>
+        <li><code>E-1012</code> ON_TIME (LEGACY_MIRROR, 09:30Z): <b>descartado</b>, fuente degradada y más antigua.</li>
+        <li><code>E-1007</code> cambio de puerta: informativo.</li>
+      </ul>
+      <p class="meta">Un ON_TIME <i>más reciente</i> que el DELAY dejaría el vuelo incierto, aunque venga de una fuente degradada.</p>
+    </div>
+    <div>
+      <h3>Opciones</h3>
+      <table>
+        <tr><th>Opción</th><th>Estado</th></tr>
+        <tr><td>O1 rebook 09-16 08:15</td><td><span class="tag P">CANDIDATA</span> costo por confirmar, vigente hasta 11:04:35Z</td></tr>
+        <tr><td>O2 rebook 23:40</td><td><span class="tag R">NO APTA</span> 1 asiento para 2 pasajeros</td></tr>
+        <tr><td>O3 reembolso</td><td><span class="tag U">NO VERIFICABLE</span> política sin consultar</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note warn"><b>Resultado:</b> <code>recommendationSupported = false</code> y <code>humanInterventionRequired = true</code>. Se informa lo verificado y el riesgo, y se deriva a una persona. No se afirma un derecho ni una conexión perdida.</div>
+</section>
+
+<section id="s5">
+  <span class="t">~1,5 min</span><div class="n">5</div><h2>Qué implementé y cómo lo validé</h2>
+  <div class="cols">
+    <div>
+      <h3>Implementado</h3>
+      <ul>
+        <li>Evaluador puro, R1–R5, resolución de fuentes, conexión proyectada, opciones con TTL y grupo.</li>
+        <li>Endpoint de lectura, 404 por reserva inexistente, 503 por dependencia caída.</li>
+        <li>Criterios <b>AC-1 a AC-6</b>.</li>
+        <li>Sin datos personales: el adaptador solo mapea IDs, tipo y edad.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>No existe</h3>
+      <ul>
+        <li>Escrituras (solo diseño), persistencia, frontend, autenticación, IA en runtime.</li>
+        <li>Integraciones reales: los 4 puertos leen fixtures del PDF, solo de <code>ABC123</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Validación</h3>
+  <table>
+    <tr><th>Qué</th><th>Cómo</th></tr>
+    <tr><td>35 pruebas con instante fijo</td><td>Sin <code>@SpringBootTest</code>. Frontera R1 en 179/180/200; escenario de 200 min con y sin menor; TTL en <code>11:04:34Z</code> (vigente) y <code>11:04:35Z</code> (vencida); fuente contradictoria; grupo; ausencia de datos personales</td></tr>
+    <tr><td>Ejecución real</td><td><code>bootRun</code> + <code>curl</code>: caso base, TTL, <code>at</code> inválido (400), reserva inexistente (404)</td></tr>
+    <tr><td>Validación manual propia</td><td>Con <code>curl</code>: caso base, errores 400 y 404, vigencia de opciones y que la respuesta no expone datos personales</td></tr>
+  </table>
+  <p class="meta">El escenario de 200 min es sintético y solo se prueba por tests, no por HTTP. Evidencia: <code>docs/implementacion/notas-construccion.md</code>.</p>
+</section>
+
+<section id="s6">
+  <span class="t">~1,5 min</span><div class="n">6</div><h2>Uso de IA, decisiones propias y controles</h2>
+  <table>
+    <tr><th>Etapa</th><th>Herramienta</th><th>Qué hice yo con la salida</th></tr>
+    <tr><td>Análisis inicial</td><td>Yo</td><td>Borrador propio</td></tr>
+    <tr><td>Refinamiento</td><td>ChatGPT</td><td>Lo usé como borrador a contrastar</td></tr>
+    <tr><td>Revisión crítica</td><td>Claude · Analyst</td><td><b>Acepté con cambios</b>: corregí un error de la IA, el reembolso, el grupo y el alcance</td></tr>
+    <tr><td>Diseño</td><td>Claude · Architect</td><td><b>Aprobé</b> y resolví 5 puntos; descarté el enum y las escrituras en código</td></tr>
+    <tr><td>Implementación</td><td>Claude · Dev</td><td>Acepté 6 supuestos del Dev; pedí el 404; descarté ampliar el alcance</td></tr>
+  </table>
+  <div class="cols">
+    <div>
+      <h3>Decisiones que tomé yo</h3>
+      <ul>
+        <li>Track Backend y alcance AC-1…AC-6.</li>
+        <li>Salida de dos booleanos con motivos.</li>
+        <li>Sin escrituras, persistencia ni frontend.</li>
+        <li>Versión de Boot con plan B.</li>
+        <li>Cerrar pendientes con supuestos explícitos y lista de validación previa a producción.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Controles</h3>
+      <ul>
+        <li>Contraste con el PDF; las cifras se recalcularon.</li>
+        <li>Lógica determinística y pruebas con instante fijo.</li>
+        <li>Nada se ejecuta; todo derecho dudoso va a una persona.</li>
+        <li>Bitácora de cada interacción, con «No registrado» donde no consta.</li>
+      </ul>
+      <p><b>Nunca a un modelo:</b> datos personales de pasajeros reales, credenciales, datos operacionales reales.</p>
+    </div>
+  </div>
+  <div class="note warn"><b>Lo que la IA no verificó:</b> la versión de Boot en la web (búsqueda bloqueada) y no se hizo revisión de código con subagentes. Código y pruebas salen de la misma IA, así que un malentendido compartido no se detectaría solo con las pruebas.</div>
+</section>
+
+<section id="s7">
+  <span class="t">~1 min</span><div class="n">7</div><h2>Limitaciones, trade-offs y próximos pasos</h2>
+  <div class="cols">
+    <div>
+      <h3>Limitaciones</h3>
+      <ul>
+        <li>Solo fixtures de <code>ABC123</code>; otro <code>bookingId</code> responde 404.</li>
+        <li>Con los datos del PDF el caso base <b>nunca</b> llega a recomendación definitiva; la rama «respaldada» solo se demuestra con escenarios sintéticos.</li>
+        <li>Si cae la política o las opciones no hay respuesta parcial (200); solo 503.</li>
+        <li>Supuestos sin validar: un solo marco horario, el retraso se propaga a la llegada, sin tiempo mínimo de conexión ni umbral de frescura.</li>
+        <li>Los supuestos del Dev no tienen todos prueba dedicada.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Trade-offs</h3>
+      <ul>
+        <li><b>Exactitud sobre cobertura:</b> ante la duda, «desconocido» y una persona, aunque haya más derivaciones.</li>
+        <li><b>Simplicidad sobre extensibilidad:</b> 5 reglas en código; una política nueva exige cambiar código.</li>
+        <li><b>Determinístico sobre IA:</b> se pierde lenguaje natural, se gana auditabilidad.</li>
+      </ul>
+      <h3>Próximos pasos</h3>
+      <ul>
+        <li>Adaptadores reales de las 4 lecturas.</li>
+        <li>Respuesta parcial si caen política u opciones.</li>
+        <li>Validar con Operaciones y PM los supuestos de <code>analisis-funcional-v0.2.md</code> §12.</li>
+        <li>Capa complementaria (diseñada): consulta ambigua, mensaje al pasajero, escrituras con idempotencia.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>Documentos: README de ingeniería · AI Usage &amp; Decision Note · análisis funcional v0.2 · arquitectura · notas de implementación · bitácora de IA</footer>
+</body>
+</html>
