@@ -1,7 +1,7 @@
 # Bitácora de uso de IA — Disruption Companion
 
 **Mantenida con la skill** `.claude/skills/ai-usage-log`. Alimenta el AI Usage & Decision Note (≤1 pág.) y la tabla de clasificación del README.
-**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-16).
+**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-17).
 
 ## 1. Registro de interacciones
 
@@ -154,6 +154,23 @@
 - **Riesgo / control:** que el Dockerfile falle en Render por no haberse probado localmente; que el contenido derivado del enunciado interno (fixtures y resúmenes) siga siendo sensible aunque el PDF no se publique: decisión del usuario, a confirmar con DRIMO. Los datos de pasajeros son ficticios.
 - **Artefactos:** `.gitignore`, `disruption-companion/Dockerfile`, `disruption-companion/.dockerignore`, `disruption-companion/src/main/resources/application.yml`, `README.md`, `docs/README.md`.
 
+### I-17 · 2026-11-04 · Fase B: preparación y publicación de entregables (GitHub, SSH de DRIMO, Render) · Claude, agente Dev de BMAD (Amelia)
+- **Alcance de la etapa:** corresponde a la **preparación y publicación** de los entregables, distinta del análisis funcional, el diseño y la implementación del vertical slice (I-01 a I-15). Requisito de DRIMO: repositorio GitHub público y URL pública de la API.
+- **Actividades:** revisión final del repositorio (enlaces, `.gitignore`, información sensible); identidad Git local de DRIMO sin tocar la global de LATAM; `.gitignore` raíz; Dockerfile y puerto por `PORT` (detalle en I-16); primer commit; llave SSH exclusiva de DRIMO generada por el usuario con passphrase y asociada solo a este repositorio (`core.sshCommand`); remoto `origin`; push y repositorio público creados por el usuario; guía de despliegue en Render con el Dockerfile.
+- **Validaciones:**
+  - Compilación y 35 pruebas en verde tras los ajustes; el JAR arranca con `PORT` y sin `PORT` (ver I-16).
+  - Antes del push: sin PDF, `build/`, `.gradle`, `.DS_Store`, `_bmad*`, `.claude`, llaves, secretos, `latam.com` ni rutas locales; un solo commit (`96b0f79`) con autor DRIMO.
+  - Después del push: la página del repositorio y el Dockerfile responden HTTP 200 sin sesión; el PDF responde 404; `main` local coincide con `origin/main`.
+  - Configuración global de Git comprobada con `shasum`: sin cambios.
+  - Autenticación SSH: **declarada por el usuario** (`Hi diegogarrido-drimo!`), **no reproducida por la IA**: su prueba no interactiva dio `Permission denied (publickey)` porque la llave tiene passphrase.
+- **Despliegue (Render, Docker):** URL pública `https://disruption-companion.onrender.com`. El usuario informó que está desplegada y que validó personalmente el endpoint de `ABC123` desde internet (declarado, sin detalle de qué comprobó). La IA lo comprobó de forma independiente el 2026-11-04 a las 22:40 con `curl` sobre HTTPS: caso base HTTP 200 (`recommendationSupported=false`, `humanInterventionRequired=true`, R1 F, R2 F, R3 UNKNOWN, R4 F, R5 T, déficit 90 min, O1 `CANDIDATE`, O2 `NOT_SUITABLE_GROUP`, O3 `NOT_VERIFIABLE`, `actionsExecuted=[]`); `XYZ999` → 404; `at` inválido → 400; `at=2026-09-15T11:04:35Z` → O1 `REQUIRES_REVALIDATION`; 0 coincidencias de datos personales. La raíz `/` responde 404 (no hay ruta definida). El Dockerfile funcionó en Render, y el plan, la región y el tiempo de despliegue: **No registrado**.
+- **Limitaciones:** el Dockerfile no se ejecutó localmente (no hay Docker); su primera ejecución real fue el despliegue en Render. No se verificaron las condiciones del plan de Render: si el servicio se duerme por inactividad, la primera petición puede tardar (la comprobación de la IA respondió en 0,7 s, sin saber si estaba dormido). La URL pública debe seguir activa mientras el comité la consulte, y eso no está garantizado por este registro; el contenido derivado del enunciado interno (fixtures, resúmenes) queda público, y su consulta con DRIMO queda pendiente. La API en Render sirve el mismo backend sin cambios de lógica. El POST de entrega **no se ha enviado**.
+- **Tiempo:** se lleva aparte del desarrollo (análisis, diseño, implementación y documentación, I-01 a I-15). El inicio exacto de la fase B y el tiempo efectivo, con los pasos manuales del usuario, **no están registrados**; el único dato es una cota de reloj entre cortes. Ver sección 5.
+- **Decisión del usuario:** **ACEPTADA** (D-47).
+- **Clasificación:** AI-assisted (configuración y guía); human (generación de la llave, creación del repositorio, push y pasos en Render).
+- **Riesgo / control:** exponer contenido interno en un repositorio público; control: PDF excluido y comprobado, decisión de publicar del usuario. Mezclar cuentas de LATAM y DRIMO; control: configuración solo local y comprobación del global.
+- **Artefactos:** `.gitignore`, `disruption-companion/Dockerfile`, `disruption-companion/.dockerignore`, repositorio `diegogarrido-drimo/disruption-companion`.
+
 ## 2. Decisiones
 
 | ID | Decisión | Estado | Fecha | Origen | Nota |
@@ -204,6 +221,7 @@
 | D-44 | Opción sin `seats_available` → `NOT_VERIFIABLE` | APROBADA como supuesto (primera versión) | 2026-11-04 | I-09 | Decisión del Dev, confirmada por el usuario 2026-11-04. Limitación: sin test dedicado; el único caso es el reembolso, que ya es NOT_VERIFIABLE por tipo |
 | D-45 | Se implementó el controller con 503 (paso 6, stretch) para cumplir `bootRun` + `curl` | APROBADA como supuesto (primera versión) | 2026-11-04 | I-09 | Decisión del Dev, confirmada por el usuario 2026-11-04. Limitación: filas «200 parcial» de AD-8 no implementadas, documentadas como pendientes; no se amplía AD-8 |
 | D-46 | `bookingId` distinto de `ABC123` → 404 controlado `BOOKING_NOT_FOUND`, sin evaluación ni datos de reserva | APROBADA | 2026-11-04 | I-10 | Pedido por el usuario. Limitación: solo existe el adaptador de fixtures; AD-8 no se amplía y los escenarios pendientes quedan documentados |
+| D-47 | Entrega: repositorio público `diegogarrido-drimo/disruption-companion`, identidad Git y llave SSH exclusivas de DRIMO solo en este repositorio, API en Render con Docker; PDF y carpetas de BMAD fuera de Git | APROBADA | 2026-11-04 | I-17 | Datos y plataforma indicados por el usuario. Aprobación del uso del contenido derivado del enunciado interno: No registrada |
 
 **Pendientes:**
 - Tiempo efectivo definitivo (P-14): ver sección 5; lo confirma el usuario al cerrar.
@@ -211,6 +229,8 @@
 - Validar con el Eng Lead si `create_human_case` deduplica (D-38) y confirmar la versión de Boot cuando haya acceso web.
 - **P-14:** tiempo efectivo definitivo; ver sección 5.
 - Confirmar que el escenario de 200 min dentro de AC-2 es lo que querías (D-26).
+- POST de entrega: no enviado; se envía una sola vez, con las URLs de GitHub y de la API ya revisadas.
+- Confirmar con DRIMO el uso del contenido derivado del enunciado interno en un repositorio público.
 - Validación previa a producción (no bloquea): `analisis-funcional-v0.2.md` §12.
 
 ## 3. Clasificación de pasos (borrador)
@@ -229,6 +249,7 @@
 
 | Implementación del backend y pruebas | AI-assisted | la IA escribe código y tests desde el diseño aprobado; el usuario revisa | tests y código de la misma IA comparten malentendidos; decisiones menores no previstas (D-40 a D-45) | cifras contrastadas con el PDF, `curl` real, búsqueda de PII, revisión humana pendiente (I-09) |
 | Evaluación de R1–R5, fuentes, opciones (implementado) | determinístico | código puro sin IA ni reloj, verificable con tests de frontera | política cambia de versión | `UNKNOWN` si la condición o versión no coincide |
+| Publicación de entregables: Git, SSH, GitHub, Render (fase B) | AI-assisted + human | la IA configura y guía; el usuario ejecuta los pasos con credenciales | mezclar cuentas; exponer contenido interno; Dockerfile sin probar | configuración local, comprobaciones previas al push, verificación pública (I-17) |
 
 Detalle de la clasificación en `docs/documentacion/README.md`. El detalle de diseño está en `docs/diseno/03-diseno-complementario.md` §1.
 
@@ -253,3 +274,24 @@ El PDF limita el trabajo a 3 horas efectivas, incluyendo análisis, implementaci
 | **Referencia total al 2026-11-04 21:50** | **≤ 135 min** (40 + 95) | Cota superior: no descuenta pausas. Quedarían ≥ 45 min de los 180. Lo que se trabaje después se suma al cerrar |
 
 Pendiente (P-14): que el usuario confirme el total efectivo definitivo al cerrar.
+
+### Fase B: preparación y publicación de entregables (I-17)
+
+Se registra aparte para no mezclarla con el análisis, el diseño y la implementación (tramo anterior). No modifica las cifras anteriores.
+
+| Corte | Tiempo | Fuente |
+|---|---|---|
+| Último corte registrado | 21:50 del 2026-11-04 | Tabla anterior |
+| Corte de este registro | 22:37 del 2026-11-04 (reloj del sistema) | Reloj del sistema |
+| Reloj entre cortes | 47 min | Cota superior; mezcla los ajustes finales de la presentación (I-14, I-15) con la fase B; el inicio exacto de la fase B: **No registrado** |
+| **Referencia total al 2026-11-04 22:37** | **≤ 182 min** (40 + 142 de reloj desde las 20:15) | Cota superior: no descuenta pausas ni el tiempo de los pasos manuales. Tiempo efectivo: **No registrado** |
+
+Cortes de la fase B, mantenidos aparte de las cifras de desarrollo (arriba, sin cambios):
+
+| Tramo | Dato | Fuente |
+|---|---|---|
+| Despliegue en Render con la API respondiendo | Comprobado por la IA a las 22:40 del 2026-11-04 | Reloj del sistema |
+| Reloj entre el corte de las 21:50 y la comprobación de las 22:40 | 50 min | Cota superior, sin pausas; mezcla los ajustes finales de la presentación (I-14, I-15) y la fase B; inicio exacto de la fase B: **No registrado** |
+| Referencia total al 2026-11-04 22:40 | ≤ 185 min (40 iniciales + 145 de reloj desde las 20:15) | Cota superior; tiempo efectivo y pasos manuales del usuario: **No registrado** |
+
+Las cifras de desarrollo (hasta las 21:50, ≤ 135 min) no se modifican. Esta fase no se justifica ni se compara con el tope del PDF: solo se registran los cortes. El tiempo efectivo definitivo (P-14) lo confirma el usuario.
