@@ -195,8 +195,9 @@
     <tr><td>35 pruebas con instante fijo</td><td>Sin <code>@SpringBootTest</code>. Frontera R1 en 179/180/200; escenario de 200 min con y sin menor; TTL en <code>11:04:34Z</code> (vigente) y <code>11:04:35Z</code> (vencida); fuente contradictoria; grupo; ausencia de datos personales</td></tr>
     <tr><td>Ejecución real</td><td><code>bootRun</code> + <code>curl</code>: caso base, TTL, <code>at</code> inválido (400), reserva inexistente (404)</td></tr>
     <tr><td>Validación manual propia</td><td>Con <code>curl</code>: caso base, errores 400 y 404, vigencia de opciones y que la respuesta no expone datos personales</td></tr>
+    <tr><td>API pública para evaluación externa</td><td>Desplegada en Render (<code>https://disruption-companion.onrender.com</code>) porque la entrega requiere una URL consultable. Solo el vertical slice, con datos simulados, sin integraciones productivas ni credenciales. <b>Auto-Deploy desactivado</b> para mantener estable la versión entregada: los cambios posteriores en GitHub no la modifican</td></tr>
   </table>
-  <p class="meta">El escenario de 200 min es sintético y solo se prueba por tests, no por HTTP. Evidencia: <code>docs/implementacion/notas-construccion.md</code>.</p>
+  <p class="meta">El escenario de 200 min es sintético y solo se prueba por tests, no por HTTP. Al ser un plan gratuito de Render, la primera petición puede tardar si el servicio estaba inactivo. Evidencia: <code>docs/implementacion/notas-construccion.md</code>.</p>
 </section>
 
 <section id="s6">

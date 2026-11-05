@@ -1,7 +1,7 @@
 # Bitácora de uso de IA — Disruption Companion
 
 **Mantenida con la skill** `.claude/skills/ai-usage-log`. Alimenta el AI Usage & Decision Note (≤1 pág.) y la tabla de clasificación del README.
-**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-18).
+**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-19).
 
 ## 1. Registro de interacciones
 
@@ -179,6 +179,15 @@
 - **Clasificación:** human (decisiones y configuración en Render) con registro AI-assisted.
 - **Riesgo / control:** ver D-48 y D-49. Se aplican las limitaciones del plan gratuito descritas allí, que **no se verificaron** contra la documentación vigente de Render.
 - **Artefactos:** `docs/documentacion/bitacora-ia.md`. Sin cambios en el código ni en el despliegue.
+
+### I-19 · 2026-11-04 · Despliegue en Render incorporado a la presentación técnica · Claude, agente Dev de BMAD (Amelia)
+- **Petición:** incorporar brevemente a la presentación la publicación de la API en Render para su evaluación externa, con datos simulados, sin integraciones productivas y con el Auto-Deploy desactivado; dentro de una sección existente, sin diapositivas nuevas ni ampliar los 10 minutos, sin tocar el backend.
+- **Salida de la IA:** en `docs/presentacion/presentacion-tecnica.html` la presentación no tenía una sección de demo o entrega, así que se integró en la sección 5 («Qué implementé y cómo lo validé»): una fila nueva en la tabla de validación (URL de la API, motivo, alcance y Auto-Deploy desactivado) y una frase en la nota inferior sobre el posible retraso de la primera petición en el plan gratuito. Sin cambios en el código ni en el resto de secciones.
+- **Decisión del usuario:** **ACEPTADA** (pedido explícito). El texto sobre el plan gratuito lo añadió la IA a partir de D-48 y no consta que el usuario lo haya revisado.
+- **Validación:** render en Chrome sin interfaz y revisión visual de la sección 5; los tiempos siguen sumando 10 min con las mismas secciones; sin enlaces externos (la URL está como texto); las anclas siguen válidas. No se probó en otros navegadores. El texto sobre el plan gratuito y el Auto-Deploy reproduce lo declarado por el usuario (D-48, D-49), no verificado por la IA.
+- **Clasificación:** AI-assisted.
+- **Riesgo / control:** que la presentación afirme la URL como activa; control: la IA comprobó que respondía HTTP 200 a las 22:44 (I-18). Si el servicio se duerme, la primera petición podría tardar durante la demostración.
+- **Artefactos:** `docs/presentacion/presentacion-tecnica.html`.
 
 ## 2. Decisiones
 
