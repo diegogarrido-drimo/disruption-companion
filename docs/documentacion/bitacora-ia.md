@@ -1,7 +1,7 @@
 # Bitácora de uso de IA — Disruption Companion
 
 **Mantenida con la skill** `.claude/skills/ai-usage-log`. Alimenta el AI Usage & Decision Note (≤1 pág.) y la tabla de clasificación del README.
-**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-17).
+**Regla:** lo que no consta se marca `No registrado`; nada se inventa. Última actualización: 2026-11-04 (I-18).
 
 ## 1. Registro de interacciones
 
@@ -171,6 +171,15 @@
 - **Riesgo / control:** exponer contenido interno en un repositorio público; control: PDF excluido y comprobado, decisión de publicar del usuario. Mezclar cuentas de LATAM y DRIMO; control: configuración solo local y comprobación del global.
 - **Artefactos:** `.gitignore`, `disruption-companion/Dockerfile`, `disruption-companion/.dockerignore`, repositorio `diegogarrido-drimo/disruption-companion`.
 
+### I-18 · 2026-11-04 · Cierre de la entrega: publicación de la API y Auto-Deploy en Render · Claude, agente Dev de BMAD (Amelia)
+- **Petición:** registrar dos decisiones del usuario sobre el despliegue: mantener la API pública y desactivar el Auto-Deploy de Render; sin tocar registros anteriores, sin presentarlo como justificación de tiempo, sin push y sin modificar código.
+- **Salida de la IA:** esta entrada, las decisiones D-48 y D-49 y una actualización de los pendientes. La IA no ejecutó acciones en Render: no tiene acceso a su panel.
+- **Decisión del usuario:** **ACEPTADA** (D-48 y D-49).
+- **Validación:** la IA comprobó con `curl` sobre HTTPS el 2026-11-04 a las 22:44 que `https://disruption-companion.onrender.com` sigue respondiendo (caso base `ABC123`, HTTP 200). **Declarado por el usuario, no verificado por la IA:** que el Auto-Deploy está desactivado y qué plan usa el servicio. Este registro no permite comprobar ninguna de las dos cosas.
+- **Clasificación:** human (decisiones y configuración en Render) con registro AI-assisted.
+- **Riesgo / control:** ver D-48 y D-49. Se aplican las limitaciones del plan gratuito descritas allí, que **no se verificaron** contra la documentación vigente de Render.
+- **Artefactos:** `docs/documentacion/bitacora-ia.md`. Sin cambios en el código ni en el despliegue.
+
 ## 2. Decisiones
 
 | ID | Decisión | Estado | Fecha | Origen | Nota |
@@ -222,6 +231,8 @@
 | D-45 | Se implementó el controller con 503 (paso 6, stretch) para cumplir `bootRun` + `curl` | APROBADA como supuesto (primera versión) | 2026-11-04 | I-09 | Decisión del Dev, confirmada por el usuario 2026-11-04. Limitación: filas «200 parcial» de AD-8 no implementadas, documentadas como pendientes; no se amplía AD-8 |
 | D-46 | `bookingId` distinto de `ABC123` → 404 controlado `BOOKING_NOT_FOUND`, sin evaluación ni datos de reserva | APROBADA | 2026-11-04 | I-10 | Pedido por el usuario. Limitación: solo existe el adaptador de fixtures; AD-8 no se amplía y los escenarios pendientes quedan documentados |
 | D-47 | Entrega: repositorio público `diegogarrido-drimo/disruption-companion`, identidad Git y llave SSH exclusivas de DRIMO solo en este repositorio, API en Render con Docker; PDF y carpetas de BMAD fuera de Git | APROBADA | 2026-11-04 | I-17 | Datos y plataforma indicados por el usuario. Aprobación del uso del contenido derivado del enunciado interno: No registrada |
+| D-48 | La API permanece pública en `https://disruption-companion.onrender.com`. Alcance: solo el vertical slice del challenge, con datos simulados (fixtures del enunciado, reserva `ABC123`), sin integraciones productivas ni credenciales | APROBADA | 2026-11-04 | I-18 | **Motivo (indicado por el usuario):** el mecanismo oficial de entrega de DRIMO requiere una URL accesible para evaluar el backend. **Consideraciones:** la API es de solo lectura y no tiene autenticación, así que cualquiera con la URL puede consultarla; responde únicamente datos ficticios y no expone datos personales (comprobado en I-17). Un `bookingId` distinto de `ABC123` responde 404. La raíz `/` responde 404 porque no hay ruta definida. **Plan gratuito (declarado por el usuario; sin verificar):** puede dormirse por inactividad, con lo que la primera petición tardaría; puede imponer límites de uso o suspensión; no hay garantía de disponibilidad mientras el comité la consulte. Conviene despertar el servicio antes de la evaluación. Cuándo se retira la API: No registrado |
+| D-49 | Auto-Deploy de Render desactivado manualmente una vez validado el servicio | APROBADA | 2026-11-04 | I-18 | **Motivo (indicado por el usuario):** mantener estable la versión entregada y evitar despliegues automáticos por cambios posteriores en GitHub. **Alcance:** el despliegue activo corresponde al commit validado; los commits posteriores del repositorio, incluidos los de documentación o bitácora, **no** se despliegan solos. **Consideraciones:** la versión desplegada puede diferir del contenido actual de `main`; cualquier despliegue futuro es manual y debe validarse de nuevo. Qué commit quedó exactamente desplegado: No registrado. Que el Auto-Deploy esté desactivado: declarado por el usuario, no verificado por la IA |
 
 **Pendientes:**
 - Tiempo efectivo definitivo (P-14): ver sección 5; lo confirma el usuario al cerrar.
@@ -229,6 +240,7 @@
 - Validar con el Eng Lead si `create_human_case` deduplica (D-38) y confirmar la versión de Boot cuando haya acceso web.
 - **P-14:** tiempo efectivo definitivo; ver sección 5.
 - Confirmar que el escenario de 200 min dentro de AC-2 es lo que querías (D-26).
+- Render: confirmar el plan, la disponibilidad de la API mientras el comité la consulte y el commit desplegado (D-48, D-49); despertar el servicio antes de la evaluación.
 - POST de entrega: no enviado; se envía una sola vez, con las URLs de GitHub y de la API ya revisadas.
 - Confirmar con DRIMO el uso del contenido derivado del enunciado interno en un repositorio público.
 - Validación previa a producción (no bloquea): `analisis-funcional-v0.2.md` §12.
